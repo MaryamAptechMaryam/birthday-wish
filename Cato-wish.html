@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Birthday Surprise for Cato</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            /* instead of fixed 100vh */
+            display: flex;
+            justify-content: center;
+            align-items: center; 
+            /* align top so scroll works */
+            overflow-y: auto;
+
+            overflow-x: hidden;
+            /* ✅ browser page scrolls */
+            color: #fff;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container {
+            text-align: center;
+            max-width: 800px;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .screen {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            animation: float 6s ease-in-out infinite;
+            display: none;
+        }
+
+
+
+        .active {
+            display: block;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .name {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #fdbb2d;
+            margin: 20px 0;
+            text-shadow: 0 0 15px rgba(253, 187, 45, 0.7);
+        }
+
+        .message {
+            font-size: 1.8rem;
+            line-height: 1.6;
+            margin: 30px 0;
+            color: #fff;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+
+        .hearts {
+            font-size: 3rem;
+            margin: 20px 0;
+            animation: beat 1.2s infinite;
+        }
+
+        @keyframes beat {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.3);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .birthday-cake {
+            font-size: 6rem;
+            margin: 20px auto;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .signature {
+            margin-top: 30px;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: #fdbb2d;
+        }
+
+        .floating-hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(255, 20, 147, 0.7);
+            font-size: 2rem;
+            user-select: none;
+            animation: floatHeart linear infinite;
+        }
+
+        @keyframes floatHeart {
+            to {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .balloons {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .balloon {
+            position: absolute;
+            bottom: -100px;
+            font-size: 3rem;
+            animation: balloonFloat 12s infinite ease-in;
+        }
+
+        @keyframes balloonFloat {
+            to {
+                transform: translateY(-100vh) translateX(20px);
+                opacity: 0;
+            }
+        }
+
+        .question {
+            font-size: 2rem;
+            margin: 30px 0;
+        }
+
+        .answer-input {
+            width: 300px;
+            padding: 15px;
+            font-size: 1.5rem;
+            border: none;
+            border-radius: 50px;
+            text-align: center;
+            margin: 20px 0;
+            outline: none;
+        }
+
+        .btn {
+            background: #fdbb2d;
+            color: #1a2a6c;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 20px 10px;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #fff;
+            transform: scale(1.05);
+        }
+
+        .incorrect {
+            animation: shake 0.5s;
+            color: #ff6b6b;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-10px);
+            }
+
+            75% {
+                transform: translateX(10px);
+            }
+        }
+
+        .special-feeling {
+            font-size: 1.8rem;
+            line-height: 1.8;
+            margin: 30px 0;
+            color: #fff;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: 0.2;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .name {
+                font-size: 3rem;
+            }
+
+            .message,
+            .special-feeling {
+                font-size: 1.4rem;
+            }
+
+            .birthday-cake {
+                font-size: 4rem;
+            }
+
+            .answer-input {
+                width: 250px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="stars" id="stars-container"></div>
+    <div class="floating-hearts" id="hearts-container"></div>
+    <div class="balloons" id="balloons-container"></div>
+
+    <!-- Welcome Screen -->
+    <div class="container">
+        <div id="welcome-screen" class="screen active">
+            <h1>Special Surprise</h1>
+            <div class="birthday-cake">🎁</div>
+            <div class="message">
+                Someone special has a birthday today...<br>
+                Are you ready for a surprise?
+            </div>
+            <button class="btn" onclick="showQuestion()">Start the Journey</button>
+        </div>
+
+        <!-- Question Screen -->
+        <div id="question-screen" class="screen">
+            <h1>Birthday Riddle</h1>
+            <div class="hearts">❓❓❓❓</div>
+            <div class="question" id="current-question">What is the special nickname I call you?</div>
+            <input type="text" id="answer-input" class="answer-input" placeholder="Your answer..."
+                onkeypress="handleKeyPress(event)">
+            <div id="feedback" class="message"></div>
+            <button class="btn" onclick="submitAnswer()">Submit Answer</button>
+            <div class="hearts">❓❓❓❓</div>
+        </div>
+
+        <!-- Suspense Screen -->
+        <div id="suspense-screen" class="screen">
+            <h1>You've Done Well!</h1>
+            <div class="message">You've answered correctly...</div>
+            <div class="hearts">💖💝💗💖</div>
+            <div class="message">But are you ready for something even more special?</div>
+            <button class="btn" onclick="revealWish()">Yes! Show Me!</button>
+            <div class="message">Take a deep breath... this is for someone truly special.</div>
+        </div>
+
+        <!-- Final Birthday Wish Screen -->
+        <div id="wish-screen" class="screen">
+            <h1>Happy Birthday, Cato!</h1>
+            <div class="birthday-cake">🎂✨🌟🎉</div>
+            <div class="name">My Dearest Cato</div>
+            <div class="hearts">💖💖💖💖</div>
+            <div class="special-feeling">
+                On your special day, I want you to know how much you mean to me.<br>
+                You're not just a friend, but someone special in my heart.<br>
+                In just two days you’ve come very close to my heart. You’ve started to feel like my own. I don’t know
+                how, but your presence makes me feel something special.<br>
+                May this year bring you endless happiness and all your dreams come true.<br>
+                You deserve all the love and joy in the world, especially today.<br>
+                Happy Birthday, My Dear Cato!
+            </div>
+            <div class="hearts">💖💖💖💖</div>
+            <div class="signature">With all my love</div>
+        </div>
+    </div>
+
+    <script>
+        // Create stars
+        const starsContainer = document.getElementById('stars-container');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.width = Math.random() * 3 + 'px';
+            star.style.height = star.style.width;
+            star.style.left = Math.random() * 100 + 'vw';
+            star.style.top = Math.random() * 100 + 'vh';
+            star.style.animationDelay = Math.random() * 5 + 's';
+            star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            starsContainer.appendChild(star);
+        }
+
+        // Create floating hearts
+        const heartsContainer = document.getElementById('hearts-container');
+        for (let i = 0; i < 30; i++) {
+            const heart = document.createElement('div');
+            heart.innerHTML = '💖';
+            heart.classList.add('heart');
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 4 + 3) + 's';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            heartsContainer.appendChild(heart);
+        }
+
+        // Create balloons
+        const balloonsContainer = document.getElementById('balloons-container');
+        const balloonTypes = ['🎈', '🎂', '🎁', '🎉', '🎊', '✨', '🌟'];
+        for (let i = 0; i < 15; i++) {
+            const balloon = document.createElement('div');
+            balloon.innerHTML = balloonTypes[Math.floor(Math.random() * balloonTypes.length)];
+            balloon.classList.add('balloon');
+            balloon.style.left = Math.random() * 100 + 'vw';
+            balloon.style.animationDelay = Math.random() * 5 + 's';
+            balloon.style.animationDuration = (Math.random() * 10 + 8) + 's';
+            balloon.style.fontSize = (Math.random() * 30 + 20) + 'px';
+            balloonsContainer.appendChild(balloon);
+        }
+
+        // Answers to questions
+        const answers = ["cato", "Cato", "CATO"];
+        let currentScreen = "welcome";
+
+        function showQuestion() {
+            document.getElementById('welcome-screen').classList.remove('active');
+            document.getElementById('question-screen').classList.add('active');
+            currentScreen = "question";
+        }
+
+        function submitAnswer() {
+            const userAnswer = document.getElementById('answer-input').value;
+            const feedbackElement = document.getElementById('feedback');
+
+            if (answers.includes(userAnswer)) {
+                feedbackElement.textContent = "That's correct! 🎉";
+                feedbackElement.style.color = "#4CAF50";
+                setTimeout(() => {
+                    document.getElementById('question-screen').classList.remove('active');
+                    document.getElementById('suspense-screen').classList.add('active');
+                    currentScreen = "suspense";
+                    document.getElementById('answer-input').value = "";
+                }, 1500);
+            } else {
+                feedbackElement.textContent = "Try again! Think of the special name I call you...";
+                feedbackElement.style.color = "#ff6b6b";
+                document.getElementById('answer-input').classList.add('incorrect');
+                setTimeout(() => {
+                    document.getElementById('answer-input').classList.remove('incorrect');
+                }, 500);
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                submitAnswer();
+            }
+        }
+
+        function revealWish() {
+            document.getElementById('suspense-screen').classList.remove('active');
+            document.getElementById('wish-screen').classList.add('active');
+            currentScreen = "wish";
+        }
+
+        // Add sparkle effect on click
+        document.addEventListener('click', function (e) {
+            for (let i = 0; i < 5; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.innerHTML = '✨';
+                sparkle.style.position = 'fixed';
+                sparkle.style.left = (e.pageX + Math.random() * 20 - 10) + 'px';
+                sparkle.style.top = (e.pageY + Math.random() * 20 - 10) + 'px';
+                sparkle.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                sparkle.style.opacity = '0.8';
+                sparkle.style.pointerEvents = 'none';
+                sparkle.style.zIndex = '100';
+                sparkle.style.animation = 'fadeAway 1s forwards';
+
+                document.body.appendChild(sparkle);
+
+                setTimeout(() => {
+                    sparkle.remove();
+                }, 1000);
+            }
+        });
+
+        // Add fadeAway animation
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fadeAway {
+                to {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+
+</html>
